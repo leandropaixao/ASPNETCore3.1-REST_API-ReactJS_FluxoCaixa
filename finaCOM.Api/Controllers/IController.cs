@@ -6,10 +6,10 @@ namespace finaCOM.Api.Controllers
 {
     public interface IController<T> where T: class
     {
-        public IActionResult GetAll();
-        public IActionResult GetById(Guid id);
-        public IActionResult Create([FromBody]T obj);
-        public IActionResult Update(Guid id, [FromBody]T obj);  
-        public IActionResult Delete(Guid id);
+        IActionResult GetAll();
+        IActionResult GetById(Guid id);
+        IActionResult Create([FromBody]T obj);
+        IActionResult Update(Guid id, [FromBody]T obj);  
+        IActionResult Delete(Guid id);
     }
 }
