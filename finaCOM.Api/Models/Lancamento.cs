@@ -6,13 +6,8 @@ namespace finaCOM.Api.Models
 {
     public class Lancamento
     {
-        public Lancamento()
-        {
-            Id = Guid.NewGuid();
-        }
-
         [Key]
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         public string Descricao { get; set; }
         public decimal ValorOriginal { get; set; }
         public decimal? ValorPago { get; set; }
