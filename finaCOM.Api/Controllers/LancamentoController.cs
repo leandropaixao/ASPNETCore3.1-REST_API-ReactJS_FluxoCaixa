@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using finaCOM.Api.Models;
 using finaCOM.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -14,31 +15,57 @@ namespace finaCOM.Api.Controllers
             _repository = repository;
         }
 
-        public IActionResult Create([FromBody] Lancamento obj)
+        [HttpPost("v1/lancamento")]
+        public async Task<IActionResult> Create([FromBody] Lancamento obj)
         {
-            throw new NotImplementedException();
+            await _repository.Create(obj);
+            return Ok();
         }
 
-        public IActionResult Delete(Guid id)
+        [HttpDelete("v1/lancamento/{id}")]
+        public async Task<IActionResult> Delete(long id)
         {
-            throw new NotImplementedException();
+            var lancamento = await _repository.GetById(id);
+            if (lancamento == null)
+            {
+                return NotFound();
+            }
+            await _repository.Delete(id);
+
+            return Ok();
         }
 
         [HttpGet("v1/lancamento")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_repository.GetAll());
+            return Ok(await _repository.GetAll());
         }
 
         [HttpGet("v1/lancamento/{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(long id)
         {
-            return Ok(_repository.GetById(id));
+            var lancamento = await _repository.GetById(id);
+
+            if (lancamento == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lancamento);
         }
 
-        public IActionResult Update(Guid id, [FromBody] Lancamento obj)
+        [HttpPut("v1/lancamento/{id}")]
+        public async Task<IActionResult> Update(long id, [FromBody] Lancamento obj)
         {
-            throw new NotImplementedException();
+            var lancamento = await _repository.GetById(id);
+
+            if (lancamento == null)
+            {
+                return NotFound();
+            }
+
+            await _repository.Update(obj);
+            return Ok();
         }
     }
 }

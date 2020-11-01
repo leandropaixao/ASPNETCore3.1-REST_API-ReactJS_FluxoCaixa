@@ -1,54 +1,49 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using finaCOM.Api.Data;
 using finaCOM.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace finaCOM.Api.Repositories
 {
     public class LancamentoRepository : IRepository<Lancamento>
     {
-        public void Create(Lancamento obj)
+        private readonly Context _context;
+
+        public LancamentoRepository(Context context)
         {
-             // Implementar o acesso ao BD e criar nova conta
+            _context = context;
+        }
+        public async Task Create(Lancamento obj)
+        {
+            _context.Add(obj);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(long id)
         {
-            //implementar o delete
+            var lancamento = await _context.Lancamentos.FirstOrDefaultAsync(l => l.Id == id);
+            _context.Remove(lancamento);
+            await _context.SaveChangesAsync();
+            
         }
 
-        public IEnumerable<Lancamento> GetAll()
+        public async Task<List<Lancamento>> GetAll()
         {
-            return new List<Lancamento> {
-                    new Lancamento{
-                        Descricao = "Conta de agua",
-                        DataVencimento = new DateTime(2020, 10, 12),
-                        ValorOriginal = 100.00M,
-                        DataPagamento = new DateTime(2020, 10, 12),
-                        ValorPago = 100.00M
-                    },
-                    new Lancamento{
-                        Descricao = "Conta de agua",
-                        DataVencimento = new DateTime(2020, 10, 12),
-                        ValorOriginal = 100.00M,
-                    }
-                };
+            return await _context.Lancamentos.ToListAsync();
         }
 
-        public Lancamento GetById(Guid id)
+        public async Task<Lancamento> GetById(long id)
         {
-            return 
-                new Lancamento{
-                    Descricao = "Conta de agua",
-                    DataVencimento = new DateTime(2020, 10, 12),
-                    ValorOriginal = 100.00M,
-                    DataPagamento = new DateTime(2020, 10, 12),
-                    ValorPago = 100.00M
-                };
+            var lancamento = await _context.Lancamentos.FindAsync(id);
+            return lancamento;
         }
 
-        public void Update(Lancamento obj)
+        public async Task Update(Lancamento obj)
         {
-            //implementar a atualização das informações
+            _context.Update(obj);
+            await _context.SaveChangesAsync();
         }
     }
 }

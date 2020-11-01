@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace finaCOM.Api.Repositories
 {
     public interface IRepository<T> where T:class 
     {
-        IEnumerable<T> GetAll();
-        T GetById(Guid id);
-        void Create(T obj);
-        void Update(T obj);
-        void Delete(Guid id);
-        
+        Task<List<T>> GetAll();
+        Task<T> GetById(long id);
+        Task Create(T obj);
+        Task Update(T obj);
+        Task Delete(long id);    
     }
 }

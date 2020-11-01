@@ -7,7 +7,7 @@ namespace finaCOM.Api.Models
     public class Lancamento
     {
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Descricao { get; set; }
         public decimal ValorOriginal { get; set; }
         public decimal? ValorPago { get; set; }
@@ -15,6 +15,6 @@ namespace finaCOM.Api.Models
         public DateTime? DataPagamento { get; set; }
 
         [ForeignKey("Conta")]
-        public Guid IdConta { get; set; }
+        public long IdConta { get; set; }
     }
 }

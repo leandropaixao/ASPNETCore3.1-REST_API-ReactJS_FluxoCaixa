@@ -1,50 +1,51 @@
 using System;
 using System.Collections.Generic;
+using finaCOM.Api.Data;
 using finaCOM.Api.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace finaCOM.Api.Repositories
 {
     public class ContaRepository : IRepository<Conta>
     {
-        public void Create(Conta obj)
+        private readonly Context _context;
+
+        public ContaRepository(Context context)
         {
-            // Implementar o acesso ao BD e criar nova conta
+            _context = context;
         }
 
-        public void Delete(Guid id)
+        public async Task Create(Conta obj)
         {
-            //implementar o delete
+            _context.Add(obj);
+            await _context.SaveChangesAsync();
+        }
+        
+        public async Task Delete(long id)
+        {
+            var conta = await _context.Contas.FindAsync(id);
+            _context.Remove(conta);
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Conta> GetAll()
+        public async Task<List<Conta>> GetAll()
         {
-            return new List<Conta> {
-                    new Conta{
-                        Nome = "Caixa",
-                        SaldoAtual = 0.00M,
-                        SaldoInicial = 0.00M    
-                    },
-                    new Conta{
-                        Nome = "Itau",
-                        SaldoAtual = 100.00M,
-                        SaldoInicial = 100.00M
-                    }
-                };
+            return await _context.Contas.ToListAsync();
         }
 
-        public Conta GetById(Guid id)
+        public async Task<Conta> GetById(long id)
         {
-            return 
-                new Conta{
-                    Nome = "Caixa",
-                    SaldoAtual = 0.00M,
-                    SaldoInicial = 0.00M    
-                };
+            var conta = await _context.Contas.FindAsync(id);
+            return conta;
         }
 
-        public void Update(Conta obj)
+        public async Task Update(Conta obj)
         {
-            //implementar a atualização das informações
+            _context.Update(obj);
+            await _context.SaveChangesAsync();
         }
     }
 }

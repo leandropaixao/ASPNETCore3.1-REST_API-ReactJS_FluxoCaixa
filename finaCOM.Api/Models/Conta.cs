@@ -7,7 +7,7 @@ namespace finaCOM.Api.Models{
     {
 
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Nome { get; set; }
         public decimal SaldoInicial { get; set; }
         public decimal SaldoAtual { get; set; }

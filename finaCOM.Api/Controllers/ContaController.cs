@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using finaCOM.Api.Models;
 using finaCOM.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +18,15 @@ namespace finaCOM.Api.Controllers
         }
 
         [HttpGet("v1/conta")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_repository.GetAll());            
+            return Ok(await _repository.GetAll());            
         }
 
         [HttpGet("v1/conta/{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(long id)
         {
-            var conta = _repository.GetById(id);
+            var conta = await _repository.GetById(id);
             if (conta == null)
             {
                 return NotFound();
@@ -35,36 +36,36 @@ namespace finaCOM.Api.Controllers
         }
 
         [HttpPost("v1/conta")]
-        public IActionResult Create([FromBody]Conta obj)
+        public async Task<IActionResult> Create([FromBody]Conta obj)
         {
-            _repository.Create(obj);
+            await _repository.Create(obj);
             return Ok();
         }
 
         [HttpPut("v1/conta/{id}")]
-        public IActionResult Update(Guid id, [FromBody]Conta obj)
+        public async Task<IActionResult> Update(long id, [FromBody]Conta obj)
         {
             var conta = _repository.GetById(id);
             if (conta == null)
             {
                 return NotFound();
             }
-            _repository.Update(obj);
+            await _repository.Update(obj);
 
-            return Ok("Put OK");
+            return Ok();
         }  
 
         [HttpDelete("v1/conta/{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var conta = _repository.GetById(id);
+            var conta = await _repository.GetById(id);
             if (conta == null)
             {
                 return NotFound();
             }
-            _repository.Delete(id);
+            await _repository.Delete(id);
 
-            return Ok("Delte OK");
+            return Ok();
         }
     }
 }
