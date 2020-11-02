@@ -8,8 +8,11 @@ namespace finaCOM.Api.Models{
 
         [Key]
         public long Id { get; set; }
+        [Required]
         public string Nome { get; set; }
+        [Required]
         public decimal SaldoInicial { get; set; }
+        [Required]
         public decimal SaldoAtual { get; set; }
 
     }

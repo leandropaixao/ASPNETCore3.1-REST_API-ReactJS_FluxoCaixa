@@ -16,8 +16,13 @@ namespace finaCOM.Api.Controllers
         }
 
         [HttpPost("v1/lancamento")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody] Lancamento obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return NotFound("Não foi possível salvar o registro");
+            }
             await _repository.Create(obj);
             return Ok();
         }
@@ -36,6 +41,7 @@ namespace finaCOM.Api.Controllers
         }
 
         [HttpGet("v1/lancamento")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _repository.GetAll());
@@ -55,6 +61,7 @@ namespace finaCOM.Api.Controllers
         }
 
         [HttpPut("v1/lancamento/{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(long id, [FromBody] Lancamento obj)
         {
             var lancamento = await _repository.GetById(id);
@@ -62,6 +69,11 @@ namespace finaCOM.Api.Controllers
             if (lancamento == null)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return NotFound("Erro ao atualizar os dados.");
             }
 
             await _repository.Update(obj);
