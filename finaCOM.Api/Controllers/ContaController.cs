@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using finaCOM.Api.Models;
 using finaCOM.Api.Repositories;
@@ -36,19 +35,13 @@ namespace finaCOM.Api.Controllers
         }
 
         [HttpPost("v1/conta")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody]Conta obj)
         {
-            if (!ModelState.IsValid)
-            {
-                return NotFound("Não foi possível salvar o registro");
-            }
             await _repository.Create(obj);
             return Ok();
         }
 
         [HttpPut("v1/conta/{id}")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(long id, [FromBody]Conta obj)
         {
             var conta = _repository.GetById(id);
@@ -56,10 +49,7 @@ namespace finaCOM.Api.Controllers
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return NotFound("Erroa o atualizar os dados.");
-            }
+            
             await _repository.Update(obj);
 
             return Ok();
