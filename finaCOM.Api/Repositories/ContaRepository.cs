@@ -44,7 +44,7 @@ namespace finaCOM.Api.Repositories
 
         public async Task Update(Conta obj)
         {
-            _context.Update(obj);
+            _context.Contas.Update(obj);
             await _context.SaveChangesAsync();
         }
     }

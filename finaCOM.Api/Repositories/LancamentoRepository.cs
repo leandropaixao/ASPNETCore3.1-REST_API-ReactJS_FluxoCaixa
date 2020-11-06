@@ -25,8 +25,7 @@ namespace finaCOM.Api.Repositories
         {
             var lancamento = await _context.Lancamentos.FirstOrDefaultAsync(l => l.Id == id);
             _context.Remove(lancamento);
-            await _context.SaveChangesAsync();
-            
+            await _context.SaveChangesAsync();   
         }
 
         public async Task<List<Lancamento>> GetAll()

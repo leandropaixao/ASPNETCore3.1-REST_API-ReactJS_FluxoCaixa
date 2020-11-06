@@ -28,7 +28,7 @@ namespace finaCOM.Api.Controllers
             var conta = await _repository.GetById(id);
             if (conta == null)
             {
-                return NotFound();
+                return NotFound($"O registro {id} não foi encontrado.");
             }
 
             return Ok(conta);
@@ -38,21 +38,14 @@ namespace finaCOM.Api.Controllers
         public async Task<IActionResult> Create([FromBody]Conta obj)
         {
             await _repository.Create(obj);
-            return Ok();
+            return Ok($"Registro criado com sucesso.");
         }
 
         [HttpPut("v1/conta/{id}")]
         public async Task<IActionResult> Update(long id, [FromBody]Conta obj)
-        {
-            var conta = _repository.GetById(id);
-            if (conta == null)
-            {
-                return NotFound();
-            }
-            
+        {   
             await _repository.Update(obj);
-
-            return Ok();
+            return Ok($"Registro {id} alterado com sucesso.");
         }  
 
         [HttpDelete("v1/conta/{id}")]
@@ -61,11 +54,11 @@ namespace finaCOM.Api.Controllers
             var conta = await _repository.GetById(id);
             if (conta == null)
             {
-                return NotFound();
+                return NotFound($"O registro {id} não foi encontrado.");
             }
             await _repository.Delete(id);
 
-            return Ok();
+            return Ok($"Registro {id} excluído com sucesso.");
         }
     }
 }

@@ -16,26 +16,6 @@ namespace finaCOM.Api.Controllers
             _repository = repository;
         }
 
-        [HttpPost("v1/lancamento")]
-        public async Task<IActionResult> Create([FromBody] Lancamento obj)
-        {
-            await _repository.Create(obj);
-            return Ok();
-        }
-
-        [HttpDelete("v1/lancamento/{id}")]
-        public async Task<IActionResult> Delete(long id)
-        {
-            var lancamento = await _repository.GetById(id);
-            if (lancamento == null)
-            {
-                return NotFound();
-            }
-            await _repository.Delete(id);
-
-            return Ok();
-        }
-
         [HttpGet("v1/lancamento")]
         public async Task<IActionResult> GetAll()
         {
@@ -49,24 +29,37 @@ namespace finaCOM.Api.Controllers
 
             if (lancamento == null)
             {
-                return NotFound();
+                return NotFound($"O registro {id} não foi encontrado.");
             }
 
             return Ok(lancamento);
         }
 
+        [HttpPost("v1/lancamento")]
+        public async Task<IActionResult> Create([FromBody] Lancamento obj)
+        {
+            await _repository.Create(obj);
+            return Ok($"Registro criado com sucesso.");
+        }
+
         [HttpPut("v1/lancamento/{id}")]
         public async Task<IActionResult> Update(long id, [FromBody] Lancamento obj)
         {
-            var lancamento = await _repository.GetById(id);
+            await _repository.Update(obj);   
+            return Ok($"Registro {id} alterado com sucesso.");
+        }
 
+        [HttpDelete("v1/lancamento/{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var lancamento = await _repository.GetById(id);
             if (lancamento == null)
             {
-                return NotFound();
+                return NotFound($"O registro {id} não foi encontrado.");
             }
+            await _repository.Delete(id);
 
-            await _repository.Update(obj);
-            return Ok();
+            return Ok($"Registro {id} excluído com sucesso.");
         }
     }
 }
